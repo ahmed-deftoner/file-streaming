@@ -1,12 +1,12 @@
 package main
 
 import (
+	"crypto/rand"
 	"fmt"
 	"io"
 	"log"
 	"net"
-
-	"github.com/aws/smithy-go/rand"
+	"time"
 )
 
 type FileServer struct {}
@@ -61,6 +61,10 @@ func sendFile(size int) error {
 }
 
 func main() {
+    go func ()  {
+        time.Sleep(time.Second * 4)
+        sendFile(1000)
+    } ()
     fs := &FileServer{}
     fs.start()
 }
