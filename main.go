@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"log"
 	"net"
 )
@@ -17,9 +18,22 @@ func (fs *FileServer) start() {
         if err != nil {
             log.Fatal(err)
         }
+        go fs.readloop(conn)
     }
 }
 
+func (fs *FileServer) readloop(conn net.Conn)  {
+    buf := make([]byte, 2048)
+    for {
+        n, err := conn.Read(buf)
+        if err != nil {
+            log.Fatal(err)
+        }
+        file := buf[:n]
+        fmt.Println(file)
+        fmt.Printf("Recieved %d bytes\n", n)
+    }
+}
 
 func main() {
 
